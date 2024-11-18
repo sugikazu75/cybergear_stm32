@@ -92,13 +92,20 @@ int main(void)
   /* USER CODE BEGIN 2 */
   CybergearCanInterfaceStm32 cybergear_can_interface_;
   cybergear_can_interface_.init(&hfdcan1);
-  CybergearDriver driver_(0x000, 0x7F);
-  driver_.init(&cybergear_can_interface_);
+  CybergearDriver driver1_(0x000, 0x7F);
+  CybergearDriver driver2_(0x000, 0x7E);
+  driver1_.init(&cybergear_can_interface_);
+  driver2_.init(&cybergear_can_interface_);
 
-  driver_.reset_motor();
-  driver_.set_mech_position_to_zero();
-  driver_.enable_motor();
-  driver_.set_run_mode(CMD_CONTROL);
+  driver1_.reset_motor();
+  driver1_.set_mech_position_to_zero();
+  driver1_.enable_motor();
+  driver1_.set_run_mode(CMD_CONTROL);
+
+  driver2_.reset_motor();
+  driver2_.set_mech_position_to_zero();
+  driver2_.enable_motor();
+  driver2_.set_run_mode(CMD_CONTROL);
   /* USER CODE END 2 */
 
   /* Infinite loop */
@@ -107,10 +114,14 @@ int main(void)
   {
     HAL_GPIO_TogglePin(LED0_GPIO_Port, LED0_Pin);
 
-    driver_.motor_control(0.0, 0.1, 0.0, 15, 1);
-    HAL_Delay(1000);
-    driver_.motor_control(1.0, 0.1, 0.0, 15, 1);
-    HAL_Delay(1000);
+    driver1_.motor_control(0.0, 0.1, 0.0, 15, 1);
+    HAL_Delay(500);
+    driver2_.motor_control(0.0, 0.1, 0.0, 15, 1);
+    HAL_Delay(500);
+    driver1_.motor_control(1.0, 0.1, 0.0, 15, 1);
+    HAL_Delay(500);
+    driver2_.motor_control(1.0, 0.1, 0.0, 15, 1);
+    HAL_Delay(500);
 
     /* USER CODE END WHILE */
 
